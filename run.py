@@ -11,14 +11,16 @@ import subprocess
 
 ap = argparse.ArgumentParser(description='Process OSM administrative ' +
                              'boundaries as individual ways.')
-ap.add_argument('-d', dest='db_name', default='osm',
+ap.add_argument('-d', dest='db_name',
                 help='PostgreSQL database.')
-ap.add_argument('-U', dest='db_user', default='postgres',
+ap.add_argument('-U', dest='db_user',
                 help='PostgreSQL user name.')
-ap.add_argument('-H', dest='db_host', default='localhost',
+ap.add_argument('-H', dest='db_host',
                 help='PostgreSQL host.')
-ap.add_argument('-p', dest='db_port', default='5432',
+ap.add_argument('-p', dest='db_port',
                 help='PostgreSQL port.')
+ap.add_argument('-W', dest='db_password',
+                help='PostgreSQL password.')
 ap.add_argument('-f', dest='min_admin_level', type=int, default=2,
                 help='Minimum admin_level to retrieve.')
 ap.add_argument('-t', dest='max_admin_level', type=int, default=4,
@@ -31,8 +33,7 @@ args = ap.parse_args()
 ## PostgreSQL setup
 
 # Set up the db connection
-con = psycopg2.connect("dbname={0} user={1} host={2} port={3}".format(
-    args.db_name, args.db_user, args.db_host, args.db_port))
+con = psycopg2.connect(database=args.db_name, user=args.db_user, password=args.db_password, host=args.db_host, port=args.db_port)
 cur = con.cursor()
 
 # Set up PostgeSQL table
